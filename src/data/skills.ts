@@ -97,7 +97,7 @@ export const SKILLS: SkillCategory[] = [
     id: "programming",
     label: "Programming Languages",
     icon: "Code2",
-    skills: ["Python", "Java", "SQL", "R", "C++", "HTML/CSS"],
+    skills: ["Python", "Java", "SQL", "R", "HTML/CSS"],
   },
   {
     id: "deploy",
