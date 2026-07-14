@@ -257,7 +257,9 @@ export default function Education() {
                 <div style={{ marginBottom: 28 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
                     <span style={{ color: "var(--text-secondary)", fontSize: "0.78rem" }}>Program Status</span>
-                    <span style={{ color: "#4A9B7F", fontSize: "0.78rem", fontWeight: 700 }}>100% Completed ✅</span>
+                    <span style={{ color: "#4A9B7F", fontSize: "0.78rem", fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                      <CheckCircle2 size={13} /> 100% Completed
+                    </span>
                   </div>
                   <div style={{ height: 6, background: "var(--surface)", borderRadius: 999, overflow: "hidden" }}>
                     <motion.div
