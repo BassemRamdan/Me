@@ -12,9 +12,11 @@ import {
   Rocket,
   MessageSquare,
   Sparkles,
+  ChevronDown,
+  ArrowUpRight,
 } from "lucide-react";
 import { SKILLS, SkillCategory } from "@/data/skills";
-import { staggerContainer, fadeUp } from "@/lib/motion";
+import { staggerContainer, fadeUp, scaleIn } from "@/lib/motion";
 
 const ICON_MAP: Record<string, React.ComponentType<{ size?: number }>> = {
   Code2,
@@ -27,26 +29,36 @@ const ICON_MAP: Record<string, React.ComponentType<{ size?: number }>> = {
   MessageSquare,
 };
 
-const CATEGORY_COLORS: Record<string, { accent: string; bg: string; border: string }> = {
-  programming: { accent: "#D4AF37", bg: "rgba(212, 175, 55, 0.08)", border: "rgba(212, 175, 55, 0.25)" },
-  ml: { accent: "#E5C158", bg: "rgba(229, 193, 88, 0.08)", border: "rgba(229, 193, 88, 0.25)" },
-  dl: { accent: "#4A7FA5", bg: "rgba(74, 127, 165, 0.08)", border: "rgba(74, 127, 165, 0.25)" },
-  nlp: { accent: "#7C6A9E", bg: "rgba(124, 106, 158, 0.08)", border: "rgba(124, 106, 158, 0.25)" },
-  data: { accent: "#4A9B7F", bg: "rgba(74, 155, 127, 0.08)", border: "rgba(74, 155, 127, 0.25)" },
-  cv: { accent: "#C0504D", bg: "rgba(192, 80, 77, 0.08)", border: "rgba(192, 80, 77, 0.25)" },
-  expert: { accent: "#E09F3E", bg: "rgba(224, 159, 62, 0.08)", border: "rgba(224, 159, 62, 0.25)" },
-  deploy: { accent: "#00A896", bg: "rgba(0, 168, 150, 0.08)", border: "rgba(0, 168, 150, 0.25)" },
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  ml: "Predictive modeling, supervised/unsupervised algorithms, ensemble techniques & feature engineering.",
+  dl: "Neural network architectures, PyTorch, CNN image recognition, optimization & transfer learning.",
+  nlp: "Text classification, TF-IDF vectorization, semantic similarity & language model prompts.",
+  data: "Exploratory Data Analysis (EDA), statistical mining, RFM segmentation & PCA dimensionality reduction.",
+  cv: "OpenCV computer vision pipelines, image processing, MediaPipe & scene classification.",
+  expert: "Rule-based expert engines (Experta), Mamdani fuzzy logic, game trees & CSP solvers.",
+  programming: "Core programming languages for data science, software engineering & backend systems.",
+  deploy: "Model hosting, cloud deployment, Git version control, and development environments.",
+};
+
+const CATEGORY_COLORS: Record<string, { accent: string; bg: string; border: string; glow: string }> = {
+  ml: { accent: "#D4AF37", bg: "rgba(212, 175, 55, 0.08)", border: "rgba(212, 175, 55, 0.25)", glow: "rgba(212, 175, 55, 0.15)" },
+  dl: { accent: "#4A7FA5", bg: "rgba(74, 127, 165, 0.08)", border: "rgba(74, 127, 165, 0.25)", glow: "rgba(74, 127, 165, 0.15)" },
+  nlp: { accent: "#7C6A9E", bg: "rgba(124, 106, 158, 0.08)", border: "rgba(124, 106, 158, 0.25)", glow: "rgba(124, 106, 158, 0.15)" },
+  data: { accent: "#4A9B7F", bg: "rgba(74, 155, 127, 0.08)", border: "rgba(74, 155, 127, 0.25)", glow: "rgba(74, 155, 127, 0.15)" },
+  cv: { accent: "#C0504D", bg: "rgba(192, 80, 77, 0.08)", border: "rgba(192, 80, 77, 0.25)", glow: "rgba(192, 80, 77, 0.15)" },
+  expert: { accent: "#E09F3E", bg: "rgba(224, 159, 62, 0.08)", border: "rgba(224, 159, 62, 0.25)", glow: "rgba(224, 159, 62, 0.15)" },
+  programming: { accent: "#E5C158", bg: "rgba(229, 193, 88, 0.08)", border: "rgba(229, 193, 88, 0.25)", glow: "rgba(229, 193, 88, 0.15)" },
+  deploy: { accent: "#00A896", bg: "rgba(0, 168, 150, 0.08)", border: "rgba(0, 168, 150, 0.25)", glow: "rgba(0, 168, 150, 0.15)" },
 };
 
 export default function Skills() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const filteredCategories =
-    activeCategory === "all"
-      ? SKILLS
-      : SKILLS.filter((cat) => cat.id === activeCategory);
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
+  };
 
   return (
     <section
@@ -59,17 +71,17 @@ export default function Skills() {
         overflow: "hidden",
       }}
     >
-      {/* Background atmosphere glow */}
+      {/* Background radial atmosphere */}
       <div
         aria-hidden
         style={{
           position: "absolute",
-          top: "25%",
+          top: "30%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "60vw",
+          width: "70vw",
           height: "40vh",
-          background: "radial-gradient(ellipse, rgba(212, 175, 55, 0.035) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, rgba(212, 175, 55, 0.04) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -80,7 +92,7 @@ export default function Skills() {
           variants={staggerContainer}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          style={{ marginBottom: 40, textAlign: "center" }}
+          style={{ marginBottom: 52, textAlign: "center" }}
         >
           <motion.div
             variants={fadeUp}
@@ -88,7 +100,7 @@ export default function Skills() {
               display: "inline-flex",
               alignItems: "center",
               gap: 8,
-              padding: "5px 14px",
+              padding: "6px 16px",
               borderRadius: 999,
               background: "rgba(212,175,55,0.08)",
               border: "1px solid rgba(212,175,55,0.2)",
@@ -100,7 +112,7 @@ export default function Skills() {
               marginBottom: 14,
             }}
           >
-            <Sparkles size={13} /> Technical Matrix
+            <Sparkles size={13} /> Technical Competencies
           </motion.div>
           
           <motion.h2
@@ -114,7 +126,7 @@ export default function Skills() {
               margin: "0 0 12px",
             }}
           >
-            Capabilities &amp; <span className="gradient-text">Skills</span>
+            Skills &amp; <span className="gradient-text">Core Specializations</span>
           </motion.h2>
           
           <motion.p
@@ -122,224 +134,218 @@ export default function Skills() {
             style={{
               color: "var(--text-secondary)",
               fontSize: "0.95rem",
-              maxWidth: 560,
+              maxWidth: 580,
               margin: "0 auto 20px",
-              lineHeight: 1.55,
+              lineHeight: 1.6,
             }}
           >
-            Core machine learning algorithms, deep learning architectures, data pipelines, and software tools.
+            Expertise structured across key artificial intelligence, data engineering, and machine learning domains.
           </motion.p>
           
           <motion.div variants={fadeUp} className="ink-divider" style={{ margin: "0 auto" }} />
         </motion.div>
 
-        {/* Interactive Filter Pills */}
+        {/* High-Impact Category Grid (2 columns on desktop, 1 on mobile) */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.4, delay: 0.15 }}
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 8,
-            justifyContent: "center",
-            marginBottom: 36,
-          }}
-        >
-          <button
-            onClick={() => setActiveCategory("all")}
-            style={{
-              padding: "7px 16px",
-              borderRadius: 999,
-              fontSize: "0.82rem",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              border: activeCategory === "all" ? "1px solid var(--accent)" : "1px solid var(--border)",
-              background: activeCategory === "all" ? "var(--accent)" : "rgba(255,255,255,0.03)",
-              color: activeCategory === "all" ? "#0a0a0a" : "var(--text-secondary)",
-            }}
-          >
-            All Stack
-          </button>
-          
-          {SKILLS.map((cat) => {
-            const isActive = activeCategory === cat.id;
-            const theme = CATEGORY_COLORS[cat.id] || CATEGORY_COLORS.programming;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                style={{
-                  padding: "7px 15px",
-                  borderRadius: 999,
-                  fontSize: "0.82rem",
-                  fontWeight: 500,
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  border: isActive ? `1px solid ${theme.accent}` : "1px solid var(--border)",
-                  background: isActive ? theme.accent : "rgba(255,255,255,0.03)",
-                  color: isActive ? "#0a0a0a" : "var(--text-secondary)",
-                }}
-              >
-                {cat.label}
-              </button>
-            );
-          })}
-        </motion.div>
-
-        {/* Compact Skill Category Cards Grid (alignItems: start prevents empty vertical stretch) */}
-        <motion.div
-          layout
+          variants={staggerContainer}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(270px, 1fr))",
             gap: 24,
             alignItems: "start",
           }}
-          className="skills-grid"
+          className="skills-category-grid"
         >
-          <AnimatePresence mode="popLayout">
-            {filteredCategories.map((category, index) => (
-              <SkillCardCategory key={category.id} category={category} index={index} />
-            ))}
-          </AnimatePresence>
+          {SKILLS.map((category, index) => {
+            const isExpanded = expandedId === category.id;
+            return (
+              <SkillCategoryCard
+                key={category.id}
+                category={category}
+                index={index}
+                isExpanded={isExpanded}
+                onToggle={() => toggleExpand(category.id)}
+              />
+            );
+          })}
         </motion.div>
       </div>
 
       <style>{`
         @media (max-width: 640px) {
-          .skills-grid { grid-template-columns: 1fr !important; }
+          .skills-category-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
   );
 }
 
-function SkillCardCategory({ category, index }: { category: SkillCategory; index: number }) {
+function SkillCategoryCard({
+  category,
+  index,
+  isExpanded,
+  onToggle,
+}: {
+  category: SkillCategory;
+  index: number;
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
   const Icon = ICON_MAP[category.icon] || Code2;
-  const theme = CATEGORY_COLORS[category.id] || CATEGORY_COLORS.programming;
+  const theme = CATEGORY_COLORS[category.id] || CATEGORY_COLORS.ml;
+  const description = CATEGORY_DESCRIPTIONS[category.id] || "";
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.96, y: 16 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96, y: 16 }}
-      transition={{ duration: 0.3, delay: index * 0.04 }}
+      variants={scaleIn}
+      transition={{ delay: index * 0.05 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onToggle}
       style={{
         background: "var(--card)",
-        border: `1px solid ${isHovered ? theme.border : "var(--border)"}`,
-        borderRadius: "var(--radius-lg)",
-        padding: "24px 24px 20px",
-        position: "relative",
+        border: `1px solid ${isHovered || isExpanded ? theme.border : "var(--border)"}`,
+        borderRadius: "var(--radius-xl)",
         overflow: "hidden",
-        boxShadow: isHovered
-          ? `0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px ${theme.accent}20`
+        position: "relative",
+        boxShadow: isHovered || isExpanded
+          ? `0 20px 48px rgba(0,0,0,0.5), 0 0 0 1px ${theme.glow}`
           : "none",
-        transition: "border-color 0.25s, box-shadow 0.25s, transform 0.25s",
-        transform: isHovered ? "translateY(-4px)" : "none",
+        transition: "all 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+        transform: isHovered ? "translateY(-5px)" : "none",
+        cursor: "pointer",
       }}
     >
-      {/* Accent top stripe */}
+      {/* Accent top gradient stripe */}
       <div
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
           height: 3,
-          background: `linear-gradient(90deg, ${theme.accent}, transparent)`,
+          background: `linear-gradient(90deg, ${theme.accent}, ${theme.accent}30, transparent)`,
         }}
       />
 
-      {/* Compact Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ padding: "28px 28px 24px" }}>
+        {/* Category Header Row */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
           <div
             style={{
-              width: 38,
-              height: 38,
-              borderRadius: 10,
+              width: 50,
+              height: 50,
+              borderRadius: 14,
               background: theme.bg,
               border: `1px solid ${theme.border}`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               color: theme.accent,
-              flexShrink: 0,
+              boxShadow: `0 8px 20px ${theme.glow}`,
             }}
           >
-            <Icon size={18} />
+            <Icon size={24} />
           </div>
-          <div>
-            <h3
-              className="font-heading"
-              style={{
-                fontWeight: 700,
-                fontSize: "1.05rem",
-                color: "var(--text-primary)",
-                margin: 0,
-                lineHeight: 1.2,
-              }}
-            >
-              {category.label}
-            </h3>
-            <span style={{ fontSize: "0.72rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-              {category.skills.length} skills
-            </span>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "4px 12px",
+              borderRadius: 999,
+              background: theme.bg,
+              border: `1px solid ${theme.border}`,
+              color: theme.accent,
+              fontSize: "0.72rem",
+              fontWeight: 700,
+              letterSpacing: "0.04em",
+            }}
+          >
+            <span>{category.skills.length} MODULES</span>
+            <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
+              <ChevronDown size={14} />
+            </motion.div>
           </div>
         </div>
-      </div>
 
-      <div style={{ height: 1, background: "var(--border)", marginBottom: 16 }} />
+        {/* Title */}
+        <h3
+          className="font-heading"
+          style={{
+            fontWeight: 700,
+            fontSize: "1.25rem",
+            color: "var(--text-primary)",
+            margin: "0 0 8px",
+            lineHeight: 1.25,
+          }}
+        >
+          {category.label}
+        </h3>
 
-      {/* Horizontal Wrap Skill Chips */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-        {category.skills.map((skill) => (
-          <span
-            key={skill}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 5,
-              padding: "4px 11px",
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid var(--border)",
-              borderRadius: 999,
-              fontSize: "0.78rem",
-              fontWeight: 500,
-              color: "var(--text-primary)",
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = theme.bg;
-              el.style.borderColor = theme.border;
-              el.style.color = theme.accent;
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget as HTMLElement;
-              el.style.background = "rgba(255,255,255,0.03)";
-              el.style.borderColor = "var(--border)";
-              el.style.color = "var(--text-primary)";
-            }}
-          >
-            <span
-              style={{
-                width: 5,
-                height: 5,
-                borderRadius: "50%",
-                background: theme.accent,
-                opacity: 0.7,
-              }}
-            />
-            {skill}
-          </span>
-        ))}
+        {/* Short Domain Summary */}
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontSize: "0.85rem",
+            lineHeight: 1.6,
+            margin: "0 0 16px",
+          }}
+        >
+          {description}
+        </p>
+
+        {/* Action prompt */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: "0.76rem",
+            fontWeight: 600,
+            color: theme.accent,
+            letterSpacing: "0.03em",
+          }}
+        >
+          <span>{isExpanded ? "Hide Technologies" : "View Technologies"}</span>
+          <ArrowUpRight size={13} style={{ transform: isExpanded ? "rotate(90deg)" : "none", transition: "transform 0.2s" }} />
+        </div>
+
+        {/* Expandable Technologies Drawer */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0, marginTop: 0 }}
+              animate={{ height: "auto", opacity: 1, marginTop: 18 }}
+              exit={{ height: 0, opacity: 0, marginTop: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: "hidden" }}
+            >
+              <div style={{ paddingTop: 16, borderTop: "1px solid var(--border)", display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 5,
+                      padding: "4px 10px",
+                      background: theme.bg,
+                      border: `1px solid ${theme.border}`,
+                      borderRadius: 999,
+                      fontSize: "0.74rem",
+                      fontWeight: 500,
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    <span style={{ width: 4, height: 4, borderRadius: "50%", background: theme.accent }} />
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );
