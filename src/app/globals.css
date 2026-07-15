@@ -259,7 +259,8 @@ body {
 
 /* ─── Custom cursor ─── */
 @media (pointer: fine) {
-  html, body, a, button, input, textarea, select, [role="button"], [data-cursor-hover] {
+  *, *::before, *::after,
+  *:hover, *:active, *:focus {
     cursor: none !important;
   }
 }
