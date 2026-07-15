@@ -7,7 +7,7 @@ export const META = {
   email: "bassenx85@gmail.com",
   github: "https://github.com/BassemRamdan/Me",
   githubUser: "https://github.com/BassemRamdan",
-  linkedin: "https://www.linkedin.com/in/bassemramdan",
+  linkedin: "https://www.linkedin.com/in/bassem-ramadan-",
   location: "Alexandria, Egypt",
   cvPath: "/cv/Bassem_Ramadan_Resume.docx",
 };
