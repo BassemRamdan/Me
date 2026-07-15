@@ -71,7 +71,7 @@ const CONTACT_INFO = [
     id: "linkedin",
     icon: Linkedin,
     label: "LinkedIn",
-    value: "linkedin.com/in/bassemramdan",
+    value: "linkedin.com/in/bassem-ramadan-",
     href: META.linkedin,
     color: "#0A66C2",
   },
