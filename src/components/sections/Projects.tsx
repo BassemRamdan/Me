@@ -139,7 +139,7 @@ export default function Projects() {
       id="projects"
       ref={ref}
       className="section-padding"
-      style={{ background: "var(--surface)", position: "relative", overflow: "hidden" }}
+      style={{ background: "transparent", position: "relative", overflow: "hidden" }}
     >
       <div className="container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
         {/* Header */}

@@ -83,7 +83,7 @@ export default function Certifications() {
       id="certifications"
       ref={ref}
       className="section-padding"
-      style={{ background: "var(--surface)", position: "relative", overflow: "hidden" }}
+      style={{ background: "transparent", position: "relative", overflow: "hidden" }}
     >
       {/* Background Atmosphere */}
       <div

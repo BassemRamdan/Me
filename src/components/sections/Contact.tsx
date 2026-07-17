@@ -94,7 +94,7 @@ export default function Contact() {
       id="contact"
       ref={ref}
       className="section-padding"
-      style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}
+      style={{ background: "transparent", position: "relative", overflow: "hidden" }}
     >
       {/* Subtle large radial behind */}
       <div

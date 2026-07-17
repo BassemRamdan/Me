@@ -37,7 +37,7 @@ export default function Education() {
       id="education"
       ref={ref}
       className="section-padding"
-      style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}
+      style={{ background: "transparent", position: "relative", overflow: "hidden" }}
     >
       {/* Subtle grid pattern background */}
       <div

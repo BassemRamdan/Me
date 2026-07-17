@@ -66,7 +66,7 @@ export default function Skills() {
       ref={ref}
       className="section-padding"
       style={{
-        background: "var(--surface)",
+        background: "transparent",
         position: "relative",
         overflow: "hidden",
       }}

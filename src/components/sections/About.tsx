@@ -21,7 +21,7 @@ export default function About() {
       id="about"
       ref={ref}
       className="section-padding"
-      style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}
+      style={{ background: "transparent", position: "relative", overflow: "hidden" }}
     >
       {/* Faint background accent */}
       <div

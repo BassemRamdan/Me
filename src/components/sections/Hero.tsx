@@ -160,7 +160,7 @@ export default function Hero() {
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
-        background: "var(--bg)",
+        background: "transparent",
       }}
     >
       <InkBrushBackground />
