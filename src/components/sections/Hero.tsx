@@ -528,60 +528,6 @@ export default function Hero() {
                 />
               </div>
             </div>
-
-            {/* Floating Stats Badge 1: NTI 96% Distinction (Top Right) */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              style={{
-                position: "absolute",
-                top: -10,
-                right: -15,
-                background: "rgba(17, 17, 17, 0.88)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(212, 175, 55, 0.3)",
-                borderRadius: 999,
-                padding: "8px 16px",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                boxShadow: "0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.15)",
-                zIndex: 4,
-              }}
-            >
-              <Award size={16} style={{ color: "#D4AF37" }} />
-              <div style={{ lineHeight: 1.2 }}>
-                <div style={{ color: "#D4AF37", fontSize: "0.78rem", fontWeight: 700 }}>NTI ML Diploma</div>
-                <div style={{ color: "var(--text-secondary)", fontSize: "0.68rem" }}>96% Distinction</div>
-              </div>
-            </motion.div>
-
-            {/* Floating Stats Badge 2: Intelligent Systems (Bottom Left) */}
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              style={{
-                position: "absolute",
-                bottom: 10,
-                left: -25,
-                background: "rgba(17, 17, 17, 0.88)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(74, 155, 127, 0.35)",
-                borderRadius: 999,
-                padding: "8px 16px",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                boxShadow: "0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(74,155,127,0.15)",
-                zIndex: 4,
-              }}
-            >
-              <Brain size={16} style={{ color: "#4A9B7F" }} />
-              <div style={{ lineHeight: 1.2 }}>
-                <div style={{ color: "#4A9B7F", fontSize: "0.78rem", fontWeight: 700 }}>Intelligent Systems</div>
-                <div style={{ color: "var(--text-secondary)", fontSize: "0.68rem" }}>FCIS Computer Science</div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </div>
