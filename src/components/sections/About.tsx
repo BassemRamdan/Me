@@ -9,7 +9,7 @@ const STATS = [
   { label: "AI & ML Projects", value: "16+", icon: Brain },
   { label: "Certifications", value: "4", icon: Award },
   { label: "Technologies", value: "25+", icon: Code2 },
-  { label: "Live Deployments", value: "4", icon: Rocket },
+  { label: "Live Deployments", value: "7", icon: Rocket },
 ];
 
 export default function About() {

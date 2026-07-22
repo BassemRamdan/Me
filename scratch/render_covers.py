@@ -1,0 +1,504 @@
+import os
+import subprocess
+from PIL import Image
+
+ARTIFACTS_DIR = r"C:\Users\basse\.gemini\antigravity\brain\3c5968f9-e164-411b-9c04-878ce9fc7ea7"
+PUBLIC_DIR = r"c:\Me\portfolio\public"
+EDGE_PATH = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+
+# Inline SVG icons (Clean Lucide minimalist vector SVGs - NO emojis)
+SVG_ICONS = {
+    "brain": '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a3 3 0 1 0-6 0"/><path d="M12 5v13"/></svg>',
+    "code": '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+    "sparkles": '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>',
+    "layers": '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.5-8.58 3.91a2 2 0 0 1-1.66 0L3.18 12.5"/><path d="m22 17.5-8.58 3.91a2 2 0 0 1-1.66 0L3.18 17.5"/></svg>',
+    "github": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>',
+    "linkedin": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>',
+    "mail": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+    "pin": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+}
+
+# 1. Option A: Deep Cyber Sapphire & Electric Cyan
+html_option_a = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+  
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    width: 1584px;
+    height: 396px;
+    background: #0B0F19;
+    color: #F3F4F6;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }}
+
+  /* Ambient Glowing Lighting Orbs */
+  .orb-cyan {{
+    position: absolute;
+    top: -80px;
+    right: 0px;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(59, 130, 246, 0.08) 50%, transparent 75%);
+    filter: blur(50px);
+  }}
+
+  .orb-blue {{
+    position: absolute;
+    bottom: -100px;
+    left: 220px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 70%);
+    filter: blur(55px);
+  }}
+
+  /* Cyber Grid Line Matrix */
+  .cyber-grid {{
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(6, 182, 212, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6, 182, 212, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 90% 80% at 75% 50%, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 75% 50%, black 40%, transparent 100%);
+  }}
+
+  /* Layout Container */
+  .container {{
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding-left: 360px; /* Leave space for profile photo overlap */
+    padding-right: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }}
+
+  .badge {{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #38BDF8;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+  }}
+
+  h1 {{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.1rem;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+  }}
+
+  .cyan-gradient {{
+    background: linear-gradient(135deg, #FFFFFF 0%, #38BDF8 50%, #818CF8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }}
+
+  .subtitle {{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #38BDF8;
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+  }}
+
+  .pills-row {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }}
+
+  .pill {{
+    padding: 6px 14px;
+    background: rgba(17, 24, 39, 0.7);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #E2E8F0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    backdrop-filter: blur(8px);
+  }}
+
+  .pill-icon {{
+    color: #38BDF8;
+    display: flex;
+    align-items: center;
+  }}
+
+  /* Right Side Contact Card Column */
+  .right-content {{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    border-left: 1px solid rgba(56, 189, 248, 0.15);
+    padding-left: 36px;
+  }}
+
+  .contact-item {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #94A3B8;
+    font-weight: 500;
+  }}
+
+  .contact-icon {{
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #38BDF8;
+  }}
+</style>
+</head>
+<body>
+  <div class="orb-cyan"></div>
+  <div class="orb-blue"></div>
+  <div class="cyber-grid"></div>
+
+  <div class="container">
+    <div class="left-content">
+      <div class="badge">
+        <span style="display:flex;align-items:center;color:#38BDF8;">{SVG_ICONS["sparkles"]}</span>
+        Intelligent Systems & AI Specialist
+      </div>
+      <h1>Bassem <span class="cyan-gradient">Ramadan</span></h1>
+      <div class="subtitle">Data Scientist &bull; Machine Learning Engineer &bull; AI Developer</div>
+      
+      <div class="pills-row">
+        <div class="pill">
+          <span class="pill-icon">{SVG_ICONS["brain"]}</span>
+          Supervised & Unsupervised ML
+        </div>
+        <div class="pill">
+          <span class="pill-icon">{SVG_ICONS["layers"]}</span>
+          Deep Learning (PyTorch & CNNs)
+        </div>
+        <div class="pill">
+          <span class="pill-icon">{SVG_ICONS["code"]}</span>
+          Data Mining & NLP
+        </div>
+      </div>
+    </div>
+
+    <div class="right-content">
+      <div class="contact-item">
+        <span>github.com/BassemRamdan</span>
+        <div class="contact-icon">{SVG_ICONS["github"]}</div>
+      </div>
+      <div class="contact-item">
+        <span>linkedin.com/in/bassem-ramadan-</span>
+        <div class="contact-icon">{SVG_ICONS["linkedin"]}</div>
+      </div>
+      <div class="contact-item">
+        <span>bassemx85@gmail.com</span>
+        <div class="contact-icon">{SVG_ICONS["mail"]}</div>
+      </div>
+      <div class="contact-item">
+        <span>Alexandria, Egypt</span>
+        <div class="contact-icon">{SVG_ICONS["pin"]}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+"""
+
+# 2. Option B: Midnight Violet & Royal Electric Purple
+html_option_b = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+  
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    width: 1584px;
+    height: 396px;
+    background: #0E0A1A;
+    color: #F3F4F6;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }}
+
+  /* Ambient Glowing Lighting Orbs */
+  .orb-purple {{
+    position: absolute;
+    top: -90px;
+    right: 30px;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.24) 0%, rgba(99, 102, 241, 0.08) 55%, transparent 75%);
+    filter: blur(50px);
+  }}
+
+  .orb-pink {{
+    position: absolute;
+    bottom: -110px;
+    left: 200px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.16) 0%, transparent 70%);
+    filter: blur(60px);
+  }}
+
+  /* Neural Network Dot Mesh */
+  .dot-mesh {{
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(167, 139, 250, 0.15) 1.5px, transparent 1.5px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse 85% 75% at 75% 50%, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 75% 50%, black 40%, transparent 100%);
+  }}
+
+  /* Layout Container */
+  .container {{
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding-left: 360px;
+    padding-right: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }}
+
+  .badge {{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #C084FC;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+  }}
+
+  h1 {{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3.1rem;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+  }}
+
+  .purple-gradient {{
+    background: linear-gradient(135deg, #FFFFFF 0%, #C084FC 50%, #E879F9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }}
+
+  .subtitle {{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #C084FC;
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+  }}
+
+  .pills-row {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }}
+
+  .pill {{
+    padding: 6px 14px;
+    background: rgba(24, 18, 43, 0.75);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #F3F4F6;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    backdrop-filter: blur(8px);
+  }}
+
+  .pill-icon {{
+    color: #C084FC;
+    display: flex;
+    align-items: center;
+  }}
+
+  /* Right Side Contact Card Column */
+  .right-content {{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    border-left: 1px solid rgba(167, 139, 250, 0.18);
+    padding-left: 36px;
+  }}
+
+  .contact-item {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #A78BFA;
+    font-weight: 500;
+  }}
+
+  .contact-icon {{
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #C084FC;
+  }}
+</style>
+</head>
+<body>
+  <div class="orb-purple"></div>
+  <div class="orb-pink"></div>
+  <div class="dot-mesh"></div>
+
+  <div class="container">
+    <div class="left-content">
+      <div class="badge">
+        <span style="display:flex;align-items:center;color:#C084FC;">{SVG_ICONS["sparkles"]}</span>
+        Intelligent Systems & AI Specialist
+      </div>
+      <h1>Bassem <span class="purple-gradient">Ramadan</span></h1>
+      <div class="subtitle">Data Scientist &bull; Machine Learning Engineer &bull; AI Developer</div>
+      
+      <div class="pills-row">
+        <div class="pill">
+          <span class="pill-icon">{SVG_ICONS["brain"]}</span>
+          Supervised & Unsupervised ML
+        </div>
+        <div class="pill">
+          <span class="pill-icon">{SVG_ICONS["layers"]}</span>
+          Deep Learning (PyTorch & CNNs)
+        </div>
+        <div class="pill">
+          <span class="pill-icon">{SVG_ICONS["code"]}</span>
+          Data Mining & Analytics
+        </div>
+      </div>
+    </div>
+
+    <div class="right-content">
+      <div class="contact-item">
+        <span>github.com/BassemRamdan</span>
+        <div class="contact-icon">{SVG_ICONS["github"]}</div>
+      </div>
+      <div class="contact-item">
+        <span>linkedin.com/in/bassem-ramadan-</span>
+        <div class="contact-icon">{SVG_ICONS["linkedin"]}</div>
+      </div>
+      <div class="contact-item">
+        <span>bassemx85@gmail.com</span>
+        <div class="contact-icon">{SVG_ICONS["mail"]}</div>
+      </div>
+      <div class="contact-item">
+        <span>Alexandria, Egypt</span>
+        <div class="contact-icon">{SVG_ICONS["pin"]}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+"""
+
+# Save HTML files
+html_a_path = os.path.join(PUBLIC_DIR, "cover_option_a.html")
+html_b_path = os.path.join(PUBLIC_DIR, "cover_option_b.html")
+
+with open(html_a_path, "w", encoding="utf-8") as f:
+    f.write(html_option_a)
+
+with open(html_b_path, "w", encoding="utf-8") as f:
+    f.write(html_option_b)
+
+# Output image paths
+cover_a_public = os.path.join(PUBLIC_DIR, "linkedin_cover_cyber_cyan.png")
+cover_b_public = os.path.join(PUBLIC_DIR, "linkedin_cover_electric_violet.png")
+
+cover_a_artifact = os.path.join(ARTIFACTS_DIR, "linkedin_cover_cyber_cyan.png")
+cover_b_artifact = os.path.join(ARTIFACTS_DIR, "linkedin_cover_electric_violet.png")
+
+# Render Option A (Cyber Cyan)
+cmd_a = [
+    EDGE_PATH, "--headless", "--disable-gpu",
+    f"--screenshot={cover_a_public}",
+    "--window-size=1584,396",
+    f"file:///{html_a_path}"
+]
+
+# Render Option B (Electric Violet)
+cmd_b = [
+    EDGE_PATH, "--headless", "--disable-gpu",
+    f"--screenshot={cover_b_public}",
+    "--window-size=1584,396",
+    f"file:///{html_b_path}"
+]
+
+print("Rendering Option A (Cyber Cyan)...")
+subprocess.run(cmd_a, check=True)
+
+print("Rendering Option B (Electric Violet)...")
+subprocess.run(cmd_b, check=True)
+
+# Copy to artifacts
+Image.open(cover_a_public).save(cover_a_artifact)
+Image.open(cover_b_public).save(cover_b_artifact)
+
+print("Both LinkedIn Cover Banner options rendered successfully!")
